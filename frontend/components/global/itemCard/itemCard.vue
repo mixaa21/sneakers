@@ -27,15 +27,16 @@ export default {
       type: Object,
       default: () => {}
     },
-    src: {
-      type: String,
-      default: ''
-    }
   },
   data: () => {
     return {
     }
   },
+  computed: {
+    src() {
+      return this.product.productImages[0].srcImg
+    }
+  }
 }
 </script>
 

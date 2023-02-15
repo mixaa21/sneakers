@@ -5,7 +5,6 @@
         v-for="product in products"
         :key="product.id"
         :product="product"
-        :src="product.productImages[product.productImages.length - 1].srcImg"
       ></ItemCard>
     </div>
 
@@ -28,6 +27,8 @@ export default {
     return {
       intervalId: null
     }
+  },
+  computed: {
   },
   mounted() {
     // this.intervalId = setInterval(this.getData, 2000)
