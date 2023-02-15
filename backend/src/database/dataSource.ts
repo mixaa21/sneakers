@@ -1,7 +1,8 @@
 import {env} from "../../env";
-import {MysqlConnectionOptions} from "typeorm/driver/mysql/MysqlConnectionOptions";
+import {DataSource} from "typeorm";
 
-const ormconfig: MysqlConnectionOptions = {
+const dataSource = new DataSource(({
+    migrationsTableName: 'migrations',
     type: 'mysql',
     host: env.host,
     port: env.port,
@@ -12,7 +13,7 @@ const ormconfig: MysqlConnectionOptions = {
     synchronize: false,
     name: 'default',
     entities:  [`${__dirname}/entities/*.js`],
-    migrations: ['src/database/migrations/*{.js}']
-};
+    migrations: ['src/database/migrations/*.ts']
+}))
 
-export default ormconfig;
+export default dataSource;

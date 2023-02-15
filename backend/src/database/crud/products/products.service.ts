@@ -12,7 +12,15 @@ export class ProductsService {
     ) {}
 
     async getAll() {
-        return await this.productRepository.find()
+        return await this.productRepository.createQueryBuilder('products').innerJoinAndSelect('products.productImages', 'productImages').getMany()
+    }
+
+    async getOne(productId: number) {
+        return await this.productRepository.createQueryBuilder('products').andWhere('products.productId = :productId').setParameter('productId', productId ).innerJoinAndSelect('products.productImages', 'productImages').getMany()
+    }
+
+    async save(entity): Promise<any> {
+        return await this.productRepository.save(entity)
     }
 
 }

@@ -4,11 +4,13 @@ import { AppService } from './app.service';
 import {TypeOrmModule} from "@nestjs/typeorm";
 import ormconfig from './database/ormconfig'
 import {ProductsModule} from "./database/crud/products/products.module";
+import {ProductImagesModule} from "./database/crud/product-images/product-images.module";
 
 @Module({
   imports: [
       TypeOrmModule.forRoot(ormconfig),
-      ProductsModule
+      ProductsModule,
+      ProductImagesModule
   ],
   controllers: [AppController],
   providers: [AppService],
