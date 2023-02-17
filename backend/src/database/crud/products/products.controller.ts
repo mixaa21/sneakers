@@ -36,6 +36,6 @@ export class ProductsController {
 
     @Post()
     async uploadFile(@Body() info: any) {
-        return await this.productsService.save(info)
+        return await this.productsService.addProduct(info)
     }
 }

@@ -20,8 +20,6 @@ export class ProductImagesService {
                 srcImg: `http://localhost:3001/${files[i].path.slice(5).replace('.avif', '')}`,
                 fProductId
             }
-            
-            
             await this.productImagesRepository.save(entity)
         }
     }

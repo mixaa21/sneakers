@@ -1,5 +1,12 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { ProductImages } from "./ProductImages";
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany, OneToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { Sizes } from "./Sizes";
+import {ProductImages} from "./ProductImages";
 
 @Entity("products", { schema: "sneakercasual" })
 export class Products {
@@ -23,4 +30,14 @@ export class Products {
 
   @OneToMany(() => ProductImages, (productImages) => productImages.fProduct)
   productImages: ProductImages[];
+
+  @ManyToMany(() => Sizes, (sizes) => sizes.products)
+
+  @JoinTable({
+    name: "products_sizes",
+    joinColumns: [{ name: "f_product_id", referencedColumnName: "productId" }],
+    inverseJoinColumns: [{ name: "f_size_id", referencedColumnName: "sizeId" }],
+    schema: "sneakercasual",
+  })
+  sizes: Sizes[];
 }

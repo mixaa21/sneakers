@@ -21,7 +21,6 @@ export class ProductImagesController {
     @UseInterceptors(AnyFilesInterceptor({
         storage: diskStorage({
             destination: function (req, file, cb) {
-                const {id} = req.body
                 const path = `./data/images/${file.fieldname}`
                 fs.mkdirSync(path, {recursive: true})
                 cb(null, path)
