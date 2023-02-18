@@ -10,6 +10,9 @@
       class="product__slider"
     ></v-slider>
     <div>{{product.name}}</div>
+    <div
+      v-for="size in product.sizes"
+    >{{size.usSize}}</div>
   </div>
 </template>
 
@@ -18,7 +21,7 @@ export default {
   name: 'ProductPage',
   async asyncData({$axios, route}) {
     const product = (await $axios.get(`http://localhost:3001/products/${route.params.id}`)).data[0]
-
+    console.log(product);
     return {
       product,
     }

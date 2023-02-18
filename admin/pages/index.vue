@@ -16,12 +16,28 @@
         required
         :rules="priceRule"
       ></v-text-field>
-      <v-text-field
-        label="price"
+      <v-select
+        label="gender"
+        v-model="info.gender"
+        :items="gender"
+        @change="getSizes"
+      ></v-select>
+      <v-select
+        label="brand"
         v-model="info.brand"
-        required
-        :rules="nameRule"
-      ></v-text-field>
+        :items="brands.map(brand => brand.brandName)"
+        @change="getSizes"
+      ></v-select>
+      <div v-for="size in sizes">
+        <v-checkbox
+          :key="size.sizeId"
+          :label="size.usSize"
+          :value="size.sizeId"
+          v-model="info.selectedSizes"
+        />
+      </div>
+
+      <div>{{info.selectedSizes}}</div>
       <v-file-input
         :accept="allowedFiles.join(',')"
         placeholder="Добавьте фото товара"
@@ -33,14 +49,6 @@
         required
         :rules="filesRule"
       />
-      <v-select
-        v-model="info.brand"
-        :items="brands.map(brand => brand.brandName)"
-        @change="getSizes"
-      ></v-select>
-      <div>{{brands}}</div>
-      <div>{{sizes}}</div>
-      <v-btn @click="$refs.input.click()">Добавить файл</v-btn>
       <v-btn @click="send">Отправить</v-btn>
     </v-form>
 
@@ -53,6 +61,8 @@ type Info = {
   name: string
   price: number
   brand: string
+  gender: string
+  selectedSizes: Array<number>
 }
 
 type BrandType = {
@@ -76,12 +86,8 @@ export default Vue.extend( {
   name: 'IndexPage',
   async asyncData({$axios}) {
     const brands =  (await $axios.get('http://localhost:3001/brands')).data
-    const sizes =  (await $axios.post('http://localhost:3001/sizes', {
-      sizeId: 1
-    })).data
     return {
       brands,
-      sizes
     }
   },
   data: () => {
@@ -89,9 +95,13 @@ export default Vue.extend( {
       info: {
         name: '',
         price: 0,
-        brand: 'sdf'
+        brand: '',
+        gender: '',
+        selectedSizes: []
       } as Info,
+      sizes: [],
       brands: [] as BrandsType,
+      gender: ['man','woman'] as Array<string>,
       images: [],
       allowedFiles: ['.jpg','.png','.avif'],
       nameRule: [v => !!v || 'Введите имя'] as RulesType,
@@ -116,8 +126,10 @@ export default Vue.extend( {
       }
     },
     async getSizes() {
-      const brandId = (this.brands.find(brand => brand.brandName === this.info.brand))?.brandId
-      console.log(brandId)
+      if (this.info.gender && this.info.brand) {
+        const brandId = (this.brands.find(brand => brand.brandName === this.info.brand))?.brandId
+        this.sizes = (await this.$axios.get(`http://localhost:3001/sizes/${brandId}/${this.info.gender[0]}`)).data
+      }
     }
   }
 })
