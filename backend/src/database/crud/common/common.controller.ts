@@ -28,7 +28,7 @@ export class CommonController {
             }
         })
     }))
-    async uploadFile(@UploadedFiles() files: Array<Express.Multer.File>, @Body() body: any) {
+    async addProduct(@UploadedFiles() files: Array<Express.Multer.File>, @Body() body: any) {
         const productId = (await this.productsService.addProduct(JSON.parse(body.info))).productId
         const filess = await this.productImagesService.add(files, productId)
     }

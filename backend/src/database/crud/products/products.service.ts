@@ -18,19 +18,23 @@ export class ProductsService {
     }
 
     async getOne(productId: number) {
-        return await this.productRepository.createQueryBuilder('products').andWhere('products.productId = :productId').setParameter('productId', productId ).innerJoinAndSelect('products.productImages', 'productImages').getMany()
+        return await this.productRepository.createQueryBuilder('products')
+            .andWhere('products.productId = :productId').setParameter('productId', productId )
+            .innerJoinAndSelect('products.productImages', 'productImages')
+            .innerJoinAndSelect('products.sizes', 'sizes')
+            .getMany()
     }
 
     async addProduct(entity): Promise<any> {
-        const en = {name: 74, 'f_size_id': 2}
-        const product = new Products()
-        const size = new Sizes()
-        size.sizeId = 2
-        product.name = 'sss'
-        product.price = 123
-        product.sizes = [size]
-        await this.productRepository.manager.save(product)
-        return await this.productRepository.save(entity)
+        const addSizes = []
+        entity.selectedSizes.forEach(sizeId => {
+            const size = new Sizes()
+            size.sizeId = sizeId
+            addSizes.push(size)
+        })
+        entity.sizes = addSizes
+        const product = Object.assign(new Products(), entity)
+        return await this.productRepository.manager.save(product)
     }
 
 }

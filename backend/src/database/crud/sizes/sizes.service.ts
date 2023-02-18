@@ -15,7 +15,10 @@ export class SizesService {
         return await this.sizesRepository.find()
     }
 
-    async getOne(sizeId: number) {
-        return await this.sizesRepository.createQueryBuilder('sizes').andWhere('sizes.sizeId = :sizeId').setParameter('sizeId', sizeId ).getOne()
+    async getByBrandId_Gender(brandId: number, gender: string) {
+        return await this.sizesRepository.createQueryBuilder('sizes')
+            .andWhere('sizes.fBrand = :brandId').setParameter('brandId', brandId )
+            .andWhere('sizes.gender = :gender').setParameter('gender', gender)
+            .getMany()
     }
 }

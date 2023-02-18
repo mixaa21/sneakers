@@ -22,20 +22,18 @@ export class ProductsController {
         private productsService: ProductsService
     ) {}
 
-    @Header("Access-Control-Allow-Origin", "*")
     @Get()
     async get() {
         return await this.productsService.getAll()
     }
 
-    @Header("Access-Control-Allow-Origin", "*")
     @Get('/:id')
     async getOne(@Param('id') productId: number) {
         return await this.productsService.getOne(productId)
     }
 
     @Post()
-    async uploadFile(@Body() info: any) {
-        return await this.productsService.addProduct(info)
+    async addProduct(@Body() productInfo: any) {
+        return await this.productsService.addProduct(productInfo)
     }
 }

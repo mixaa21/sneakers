@@ -32,7 +32,6 @@ export class Products {
   productImages: ProductImages[];
 
   @ManyToMany(() => Sizes, (sizes) => sizes.products)
-
   @JoinTable({
     name: "products_sizes",
     joinColumns: [{ name: "f_product_id", referencedColumnName: "productId" }],
