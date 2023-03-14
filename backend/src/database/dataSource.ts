@@ -12,7 +12,7 @@ const dataSource = new DataSource(({
     logging: false,
     synchronize: false,
     name: 'default',
-    entities:  [`${__dirname}/entities/*.js`],
+    entities:  ["src/database/entities/*{.ts,.js}","dist/src/database/entities/*{.ts,.js}"],
     migrations: ['src/database/migrations/*.ts']
 }))
 

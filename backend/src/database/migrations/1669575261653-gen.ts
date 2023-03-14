@@ -1,18 +1,49 @@
-import { MigrationInterface, QueryRunner } from "typeorm"
+import {MigrationInterface, QueryRunner, Table} from "typeorm"
 
 export class gen1669575261653 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`
-            create table products (
-                product_id int unsigned auto_increment,
-                name varchar(100) not null,
-                price int not null,
-                category varchar(100),
-                img varchar(100),
-                constraint pk_product_id primary key (product_id)
-            );
-        `)
+
+        await queryRunner.createTable(new Table({
+            name: 'products',
+            columns: [
+                {
+                    name: 'product_id',
+                    isPrimary: true,
+                    type: 'int',
+                    unsigned: true,
+                    isNullable: false,
+                    isGenerated: true,
+                    generationStrategy: 'increment'
+                },
+                {
+                    name: 'name',
+                    type: 'varchar',
+                    length: '100',
+                    isNullable: false,
+                },
+                {
+                    name: "price",
+                    type: 'int',
+                    isNullable: false,
+                },
+                {
+                    name: 'f_brand_id',
+                    type: 'int',
+                    unsigned: true,
+                    isNullable: false,
+                },
+
+            ],
+            foreignKeys: [
+                {
+                    columnNames: ['f_brand_id'],
+                    referencedColumnNames: ['brand_id'],
+                    referencedTableName: 'brands'
+                }
+            ]
+
+        }))
     }
     public async down(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`

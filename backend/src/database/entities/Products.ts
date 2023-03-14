@@ -1,12 +1,16 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   JoinTable,
-  ManyToMany, OneToMany,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import { ProductImages } from "./ProductImages";
+import { Brands } from "./Brands";
 import { Sizes } from "./Sizes";
-import {ProductImages} from "./ProductImages";
 
 @Entity("products", { schema: "sneakercasual" })
 export class Products {
@@ -19,17 +23,15 @@ export class Products {
   @Column("int", { name: "price" })
   price: number;
 
-  @Column("varchar", { name: "category", nullable: true, length: 100 })
-  category: string | null;
-
-  @Column("varchar", { name: "img", nullable: true, length: 100 })
-  img: string | null;
-
-  @Column("varchar", { name: "brand", nullable: true, length: 100 })
-  brand: string | null;
-
   @OneToMany(() => ProductImages, (productImages) => productImages.fProduct)
   productImages: ProductImages[];
+
+  @ManyToOne(() => Brands, (brands) => brands.products, {
+    onDelete: "NO ACTION",
+    onUpdate: "NO ACTION",
+  })
+  @JoinColumn([{ name: "f_brand_id", referencedColumnName: "brandId" }])
+  fBrand: Brands;
 
   @ManyToMany(() => Sizes, (sizes) => sizes.products)
   @JoinTable({

@@ -1,12 +1,19 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import {json, static as s, urlencoded} from "express";
+import * as session from 'express-session';
+
 
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors()
   app.use(json({limit: '50mb'}));
+  app.use(session({
+    secret: 'my-secret',
+    resave: false,
+    saveUninitialized: false,
+  }));
   app.use(urlencoded({limit: '50mb', extended: true, parameterLimit: 1000000}));
   app.use(s('data', {
     setHeaders: ((res: any, path: string, stat: any) => {

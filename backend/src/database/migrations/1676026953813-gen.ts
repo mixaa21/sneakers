@@ -27,6 +27,7 @@ export class gen1676026953813 implements MigrationInterface {
                     columnNames: ["f_product_id"],
                     referencedTableName: "products",
                     referencedColumnNames: ["product_id"],
+                    onDelete: "CASCADE"
                 }
             ]
         }))

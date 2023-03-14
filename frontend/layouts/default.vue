@@ -58,7 +58,9 @@
 <!--      </v-btn>-->
 <!--    </v-app-bar>-->
     <v-main>
+      <div class="containerr">
         <Nuxt />
+      </div>
     </v-main>
 <!--    <v-navigation-drawer-->
 <!--      v-model="rightDrawer"-->
@@ -114,3 +116,7 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+@import 'default.scss'
+</style>

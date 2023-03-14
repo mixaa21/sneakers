@@ -20,8 +20,9 @@ export class ProductsService {
     async getOne(productId: number) {
         return await this.productRepository.createQueryBuilder('products')
             .andWhere('products.productId = :productId').setParameter('productId', productId )
-            .innerJoinAndSelect('products.productImages', 'productImages')
+            .innerJoinAndSelect('products.productImages', 'productImages', '')
             .innerJoinAndSelect('products.sizes', 'sizes')
+            .innerJoinAndSelect('products.fBrand', 'fBrand')
             .getMany()
     }
 

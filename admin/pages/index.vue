@@ -24,8 +24,10 @@
       ></v-select>
       <v-select
         label="brand"
-        v-model="info.brand"
-        :items="brands.map(brand => brand.brandName)"
+        v-model="info.fBrand"
+        :items="brands"
+        item-text="brandName"
+        item-value="brandId"
         @change="getSizes"
       ></v-select>
       <div v-for="size in sizes">
@@ -36,7 +38,6 @@
           v-model="info.selectedSizes"
         />
       </div>
-
       <div>{{info.selectedSizes}}</div>
       <v-file-input
         :accept="allowedFiles.join(',')"
@@ -60,7 +61,7 @@
 type Info = {
   name: string
   price: number
-  brand: string
+  fBrand: number | null
   gender: string
   selectedSizes: Array<number>
 }
@@ -95,7 +96,7 @@ export default Vue.extend( {
       info: {
         name: '',
         price: 0,
-        brand: '',
+        fBrand: null,
         gender: '',
         selectedSizes: []
       } as Info,
@@ -126,9 +127,9 @@ export default Vue.extend( {
       }
     },
     async getSizes() {
-      if (this.info.gender && this.info.brand) {
-        const brandId = (this.brands.find(brand => brand.brandName === this.info.brand))?.brandId
-        this.sizes = (await this.$axios.get(`http://localhost:3001/sizes/${brandId}/${this.info.gender[0]}`)).data
+      if (this.info.gender && this.info.fBrand) {
+
+        this.sizes = (await this.$axios.get(`http://localhost:3001/sizes/${this.info.fBrand}/${this.info.gender[0]}`)).data
       }
     }
   }

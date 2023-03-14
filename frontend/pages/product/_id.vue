@@ -1,29 +1,35 @@
 <template>
-  <div class="product"
-  >
-    <div class="product__img-container">
-      <img class="product__img" :src="src" alt="">
+  <div class="product">
+    <div class="r-container">
+      <ProductSpinner
+        :product-images="product.productImages"
+      />
+      <div class="c-container">
+        <h1 class="product__name">{{product.name}}</h1>
+        <h2 class="product__name">{{product.price}}$</h2>
+
+        <SizeGrid
+          :size-grids="sizes"
+          :available-sizes="product.sizes.map(size => size.sizeId)"
+        />
+      </div>
     </div>
-    <v-slider
-      v-model="value"
-      :step="step"
-      class="product__slider"
-    ></v-slider>
-    <div>{{product.name}}</div>
-    <div
-      v-for="size in product.sizes"
-    >{{size.usSize}}</div>
+
   </div>
 </template>
 
 <script>
+import ProductSpinner from "@/components/global/productSpinner/ProductSpinner";
+import SizeGrid from "@/components/global/sizeGrid/SizeGrid";
 export default {
   name: 'ProductPage',
+  components: {SizeGrid, ProductSpinner},
   async asyncData({$axios, route}) {
     const product = (await $axios.get(`http://localhost:3001/products/${route.params.id}`)).data[0]
-    console.log(product);
+    const sizes = (await $axios.get(`http://localhost:3001/sizes/${product.fBrand.brandId}/m`)).data
     return {
       product,
+      sizes
     }
   },
   data: () => {
@@ -40,7 +46,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-@import './index.scss';
 
+<style scoped lang="scss">
+@import "./index";
 </style>

@@ -10,7 +10,7 @@ export class ProductImages {
   srcImg: string;
 
   @ManyToOne(() => Products, (products) => products.productImages, {
-    onDelete: "NO ACTION",
+    onDelete: "CASCADE",
     onUpdate: "NO ACTION",
   })
   @JoinColumn([{ name: "f_product_id", referencedColumnName: "productId" }])
