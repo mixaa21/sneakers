@@ -7,38 +7,45 @@
         :product="product"
       ></ItemCard>
     </div>
-
   </div>
 </template>
 
-<script>
-import ItemCard from "@/components/global/itemCard/itemCard";
+<script lang="ts">
+import Vue from "vue";
+import ItemCard from "~/components/global/itemCard/itemCard.vue";
+import {mapGetters} from 'vuex'
 
-export default {
+export default Vue.extend({
   name: 'IndexPage',
   components: {ItemCard},
-  async asyncData({$axios}) {
-    const products = (await $axios.get('http://localhost:3001/products')).data
-    return {
-      products,
-    }
-  },
+  // async asyncData({$axios}) {
+  //   const products = (await $axios.get('http://localhost:3001/products')).data
+  //   return {
+  //     products,
+  //   }
+  // },
   data: () => {
     return {
-      intervalId: null
+      intervalId: null,
     }
   },
   computed: {
-  },
-  mounted() {
-    // this.intervalId = setInterval(this.getData, 2000)
+    allPosts() {
+      return this.$accessor.posts
+    },
+    products() {
+      return this.$accessor.allProducts
+    }
   },
   methods: {
     async getData() {
       this.products = (await this.$axios.get('http://localhost:3001/products')).data
     }
+  },
+  async mounted() {
+    await this.$store.dispatch('getProducts')
   }
-}
+})
 </script>
 
 <style scoped lang="scss">

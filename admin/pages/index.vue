@@ -30,8 +30,9 @@
         item-value="brandId"
         @change="getSizes"
       ></v-select>
-      <div v-for="size in sizes">
+      <div class="sizes" v-for="size in sizes">
         <v-checkbox
+          class="item"
           :key="size.sizeId"
           :label="size.usSize"
           :value="size.sizeId"
@@ -128,10 +129,13 @@ export default Vue.extend( {
     },
     async getSizes() {
       if (this.info.gender && this.info.fBrand) {
-
         this.sizes = (await this.$axios.get(`http://localhost:3001/sizes/${this.info.fBrand}/${this.info.gender[0]}`)).data
       }
     }
   }
 })
 </script>
+
+<style scoped lang="scss">
+@import 'index.scss'
+</style>
